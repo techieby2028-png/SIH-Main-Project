@@ -1,43 +1,13 @@
-const express = require("express");
-const cors = require("cors");
-const dotenv = require("dotenv");
-const connectDB = require("./config/db");
-
-dotenv.config();
-
+const express = require('express');
+const cors = require('cors');
 const app = express();
 
-connectDB();
-
-app.use(cors());
+app.use(cors()); // Allows frontend to make request calls
 app.use(express.json());
 
-const patientRoutes = require("./routes/patientRoutes");
-const doctorRoutes = require("./routes/doctorRoutes");
-const hospitalRoutes = require("./routes/hospitalRoutes");
-const appointmentRoutes = require("./routes/appointmentRoutes");
-const consultationRoutes = require("./routes/consultationRoutes");
-const medicalRecordRoutes = require("./routes/medicalRecordRoutes");
-const referralRoutes = require("./routes/referralRoutes");
-const authRoutes = require("./routes/authRoutes");
-const queueRoutes = require("./routes/queueRoutes");
+app.use('/api/queue', require('./routes/queueRoutes'));
+// Add Member 2 & Member 5 routes here as they deliver code:
+// app.use('/api/auth', require('./routes/authRoutes'));
+// app.use('/api/medical-records', require('./routes/medicalRecordRoutes'));
 
-app.use("/api/patients", patientRoutes);
-app.use("/api/doctors", doctorRoutes);
-app.use("/api/hospitals", hospitalRoutes);
-app.use("/api/appointments", appointmentRoutes);
-app.use("/api/consultations", consultationRoutes);
-app.use("/api/medical-records", medicalRecordRoutes);
-app.use("/api/referrals", referralRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/queue", queueRoutes);
-
-app.get("/", (req, res) => {
-    res.send("Healthcare Backend Running");
-});
-
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+app.listen(5000, () => console.log('Backend running on port 5000'));
